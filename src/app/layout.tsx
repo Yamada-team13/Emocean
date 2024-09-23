@@ -3,7 +3,7 @@ import "../styles/globals.css";
 
 export const metadata: Metadata = {
   title: "emotion mapper",
-  description: "This is a app for hackathon.",
+  description: "これは感情をマッピングして共有するためのアプリケーションです。",
 };
 
 export default function RootLayout({
