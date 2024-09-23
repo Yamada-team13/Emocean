@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Map() {
   return (
-    <>
+    <div>
       <div className="w-full h-[90px] bg-[#ee9ecc] text-slate-100">
         <span className={`${font.className} flex flex-row justify-between`}>
           <Link href="/" className="text-5xl pt-5 pl-7">
@@ -18,6 +18,6 @@ export default function Map() {
         </span>
       </div>
       <h1>share</h1>
-    </>
+    </div>
   );
 }

@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.5s forwards; /* 1秒間のフェードイン */
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}

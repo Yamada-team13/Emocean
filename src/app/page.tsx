@@ -1,9 +1,18 @@
+"use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // ページが読み込まれた際にフェードインを開始
+    setIsVisible(true);
+  }, []);
+
   return (
     <>
-      <div className="w-full h-screen">
+      <div className={`w-full h-screen ${isVisible ? "fade-in" : ""}`}>
         <div className="flex items-center justify-center h-full">
           <div className="relative w-full h-full">
             <div
