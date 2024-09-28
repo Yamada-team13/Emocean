@@ -1,12 +1,25 @@
 import { GoogleMap, Marker } from "@react-google-maps/api";
 
 // GoogleMapComponentはGoogle Mapとピン（マーカー）を表示するコンポーネント
+interface MarkerType {
+  lat: number;
+  lng: number;
+  emoji: string;
+}
+
+interface GoogleMapComponentProps {
+  center: { lat: number; lng: number };
+  markers: MarkerType[];
+  onMapClick: (event: google.maps.MapMouseEvent) => void; // onMapClickの型を定義
+  onMarkerClick: (index: number) => void; // onMarkerClickの型を定義
+}
+
 export default function GoogleMapComponent({
   center,
   markers,
   onMapClick,
   onMarkerClick,
-}) {
+}: GoogleMapComponentProps) {
   // マップのスタイル設定（幅と高さを100%にする）
   return (
     <GoogleMap
