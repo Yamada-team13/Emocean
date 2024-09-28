@@ -7,17 +7,16 @@ import { useLoadScript } from "@react-google-maps/api";
 import GoogleMapComponent from "@/components/MapComponent"; // Google Mapsコンポーネント
 import useCurrentLocation from "@/hooks/useCurrentLocation"; // 現在地取得フックをインポート
 
-interface Marker {
+type Marker = {
   lat: number;
   lng: number;
   emoji: string;
-}
+};
 
 export default function Map() {
   // Google Maps APIを読み込む
-  const apiKey = process.env.NEXT_PUBLIC_MAPS_API_KEY as string;
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: apiKey, // 環境変数からAPIキーを取得
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!, // 環境変数からAPIキーを取得
   });
 
   const [markers, setMarkers] = useState<Marker[]>([]); // マーカー情報を保存する状態
@@ -32,13 +31,16 @@ export default function Map() {
   }, []);
 
   // マーカー情報をローカルストレージに保存する関数
-  const saveMarkersToLocalStorage = (newMarkers: Marker[]) => {
-    localStorage.setItem("markers", JSON.stringify(newMarkers)); // マーカー情報をJSON形式で保存
+  const saveMarkersToLocalStorage = (updatedMarkers: Marker[]) => {
+    localStorage.setItem("markers", JSON.stringify(updatedMarkers)); // マーカー情報をJSON形式で保存
   };
 
   // 地図をクリックした際に新しいマーカーを追加する関数
   const handleMapClick = (event: google.maps.MapMouseEvent) => {
-    if (!event.latLng) return; // latLngがない場合は何もしない
+    if (!event.latLng) {
+      window.alert("位置情報を読み込めません");
+      return;
+    }
     const emoji = prompt("絵文字を選んでください: 😊, 😢, 😡, 😍, 😎", "😊"); // ユーザーに絵文字を入力させる
     const newMarker = {
       lat: event.latLng.lat(), // クリックした場所の緯度
@@ -54,7 +56,8 @@ export default function Map() {
   // Google Mapsの読み込みが完了していない場合はローディングメッセージを表示
   if (!isLoaded) return <div>Loading...</div>;
   // 位置情報の取得に失敗した場合はエラーメッセージを表示
-  if (locationError) return <div>Error occure in loading location</div>;
+  if (locationError) window.alert("Failed to load location");
+  if (loadError) window.alert("Failed to load Google Maps");
 
   return (
     <div>
@@ -75,8 +78,8 @@ export default function Map() {
       {/* 地図の表示 */}
       <div className="w-full h-[calc(100vh-90px)]">
         <GoogleMapComponent
-          markers={markers} // マーカー情報を渡す
           center={location || { lat: 35.6762, lng: 139.6503 }} // 現在地を地図の中心に設定。取得できなければ東京をデフォルト
+          markers={markers} // マーカー情報を渡す
           onMapClick={handleMapClick} // 地図クリック時に新しいマーカーを追加
           onMarkerClick={() => {}}
         />
