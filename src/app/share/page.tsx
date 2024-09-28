@@ -42,6 +42,16 @@ export default function Map() {
     saveMarkersToLocalStorage(updatedMarkers); // ローカルストレージに新しいマーカーを保存
   };
 
+  //マーカーをクリックした際に削除する関数
+  const handleMarkerClick = (index) => {
+    const confirmDelete = window.confirm("このマーカーを削除しますか？"); //確認メッセージ
+    if (confirmDelete) {
+      const updatedMarkers = markers.filter((_, i) => i !== index); // クリックされたマーカーを除外して新しい配列を作成
+      setMarkers(updatedMarkers); // マーカー状態を更新
+      saveMarkersToLocalStorage(updatedMarkers); // ローカルストレージに更新されたマーカー情報を保存
+    }
+  };
+
   // Google Mapsの読み込みが完了していない場合はローディングメッセージを表示
   if (!isLoaded) return <div>Loading...</div>;
   // 位置情報の取得に失敗した場合はエラーメッセージを表示
@@ -53,7 +63,7 @@ export default function Map() {
       <div className="w-full h-[90px] bg-[#ee9ecc] text-slate-100">
         <span className={`${font.className} flex flex-row justify-between`}>
           <Link href="/" className="text-5xl pt-5 pl-7">
-            emotion mapper
+            Emocean
           </Link>
           <span className="flex justify-between mt-8 mr-12">
             <Link href="/map" className="text-3xl">
@@ -69,6 +79,7 @@ export default function Map() {
           markers={markers} // マーカー情報を渡す
           center={location || { lat: 35.6762, lng: 139.6503 }} // 現在地を地図の中心に設定。取得できなければ東京をデフォルト
           onMapClick={handleMapClick} // 地図クリック時に新しいマーカーを追加
+          onMarkerClick={handleMarkerClick} // マーカークリック時に削除を実行
         />
       </div>
     </div>

@@ -1,7 +1,12 @@
 import { GoogleMap, Marker } from "@react-google-maps/api";
 
 // GoogleMapComponentはGoogle Mapとピン（マーカー）を表示するコンポーネント
-export default function GoogleMapComponent({ center, markers, onMapClick }) {
+export default function GoogleMapComponent({
+  center,
+  markers,
+  onMapClick,
+  onMarkerClick,
+}) {
   // マップのスタイル設定（幅と高さを100%にする）
   return (
     <GoogleMap
@@ -19,6 +24,8 @@ export default function GoogleMapComponent({ center, markers, onMapClick }) {
             text: marker.emoji, // マーカーに絵文字をラベルとして表示
             fontSize: "32px", // ラベルのフォントサイズを設定
           }}
+          // マーカークリックで削除を実行
+          onClick={() => onMarkerClick(index)}
         />
       ))}
     </GoogleMap>
