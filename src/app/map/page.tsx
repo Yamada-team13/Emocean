@@ -1,5 +1,9 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { font } from "@/font/font";
 import Link from "next/link";
+import ShowMap from "./showmap";
 
 export default function Map() {
   return (
@@ -17,7 +21,10 @@ export default function Map() {
           </span>
         </span>
       </div>
-      <h1>map</h1>
+      {/* <h1>map</h1> */}
+      <div>
+        <ShowMap />
+      </div>
     </div>
   );
 }
