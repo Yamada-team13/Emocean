@@ -21,7 +21,7 @@ export default function Map() {
   });
 
   const [markers, setMarkers] = useState<Marker[]>([]); // マーカー情報を保存する状態
-  const { location, error } = useCurrentLocation(); // 現在地を取得するカスタムフックを使用
+  const { location, locationError } = useCurrentLocation(); // 現在地を取得するカスタムフックを使用
 
   // 初回レンダリング時にローカルストレージからマーカー情報を読み込む
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function Map() {
   // Google Mapsの読み込みが完了していない場合はローディングメッセージを表示
   if (!isLoaded) return <div>Loading...</div>;
   // 位置情報の取得に失敗した場合はエラーメッセージを表示
-  if (error) return <div>{error}</div>;
+  if (locationError) return <div>Error occure in loading location</div>;
 
   return (
     <div>
@@ -78,6 +78,7 @@ export default function Map() {
           markers={markers} // マーカー情報を渡す
           center={location || { lat: 35.6762, lng: 139.6503 }} // 現在地を地図の中心に設定。取得できなければ東京をデフォルト
           onMapClick={handleMapClick} // 地図クリック時に新しいマーカーを追加
+          onMarkerClick={() => {}}
         />
       </div>
     </div>

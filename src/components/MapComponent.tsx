@@ -1,12 +1,19 @@
 import { GoogleMap, Marker } from "@react-google-maps/api";
 
+type Props = {
+  center: { lat: number; lng: number };
+  markers: { lat: number; lng: number; emoji: string }[];
+  onMapClick: (event: google.maps.MapMouseEvent) => void;
+  onMarkerClick: (index: number) => void;
+};
+
 // GoogleMapComponentはGoogle Mapとピン（マーカー）を表示するコンポーネント
 export default function GoogleMapComponent({
   center,
   markers,
   onMapClick,
   onMarkerClick,
-}) {
+}: Props) {
   // マップのスタイル設定（幅と高さを100%にする）
   return (
     <GoogleMap
