@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "../styles/globals.css";
 
 export const metadata: Metadata = {
-  title: "emotion mapper",
-  description: "This is a app for hackathon.",
+  title: "Emocean",
+  description: "これは感情をマッピングして共有するためのアプリケーションです。",
 };
 
 export default function RootLayout({
