@@ -5,6 +5,7 @@ import GoogleMapComponent from "@/components/MapComponent"; // Google Mapsコン
 import { font } from "@/font/font";
 import Link from "next/link";
 import useCurrentLocation from "@/hooks/useCurrentLocation"; // 現在地取得フックをインポート
+import UnLoadedPage from "@/components/UnLoadedPage";
 
 type typeofMarker = {
   lat: number;
@@ -36,7 +37,7 @@ export default function Map() {
 
   // 地図をクリックした際に新しいマーカーを追加する関数
   const handleMapClick = (event: google.maps.MapMouseEvent) => {
-    if (event.latLng) {
+    if (event.latLng && isLoaded) {
       const emoji = prompt("絵文字を選んでください: 😊, 😢, 😡, 😍, 😎", "😊"); // ユーザーに絵文字を入力させる
       const newMarker = {
         lat: event.latLng.lat(), // クリックした場所の緯度
@@ -61,12 +62,11 @@ export default function Map() {
     }
   };
 
-  // Google Mapsの読み込みが完了していない場合はローディングメッセージを表示
-  if (!isLoaded) return <div>Loading...</div>;
-  // マップのロードでエラーが発生した場合のエラーメッセージ
-  if (loadError) return <div>Load Error</div>;
-  // 位置情報の取得に失敗した場合のエラーメッセージ
-  if (locationError) return <div>Location Error</div>;
+  if (!isLoaded) return <UnLoadedPage />; // Google Maps APIが読み込まれるまでローディング表示
+  // 位置情報の取得に失敗した場合はエラーメッセージを表示
+  if (locationError) window.alert("Failed to load location");
+  // Google Mapsの読み込みに失敗した場合はエラーメッセージを表示
+  if (loadError) window.alert("Failed to load Google Maps");
 
   return (
     <div>

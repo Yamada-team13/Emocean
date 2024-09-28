@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "../styles/globals.css";
 
 export const metadata: Metadata = {
-  title: "emotion mapper",
+  title: "Emocean",
   description: "これは感情をマッピングして共有するためのアプリケーションです。",
 };
 
