@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useLoadScript } from "@react-google-maps/api";
 import GoogleMapComponent from "@/components/MapComponent"; // Google Mapsコンポーネント
 import useCurrentLocation from "@/hooks/useCurrentLocation"; // 現在地取得フックをインポート
+import UnLoadedPage from "@/components/UnLoadedPage";
 
 type Marker = {
   lat: number;
@@ -37,26 +38,24 @@ export default function Map() {
 
   // 地図をクリックした際に新しいマーカーを追加する関数
   const handleMapClick = (event: google.maps.MapMouseEvent) => {
-    if (!event.latLng) {
-      window.alert("位置情報を読み込めません");
-      return;
-    }
-    const emoji = prompt("絵文字を選んでください: 😊, 😢, 😡, 😍, 😎", "😊"); // ユーザーに絵文字を入力させる
-    const newMarker = {
-      lat: event.latLng.lat(), // クリックした場所の緯度
-      lng: event.latLng.lng(), // クリックした場所の経度
-      emoji: emoji || "😊", // デフォルトで絵文字を設定
-    };
+    if (event.latLng && isLoaded) {
+      const emoji = prompt("絵文字を選んでください: 😊, 😢, 😡, 😍, 😎", "😊"); // ユーザーに絵文字を入力させる
+      const newMarker = {
+        lat: event.latLng.lat(), // クリックした場所の緯度
+        lng: event.latLng.lng(), // クリックした場所の経度
+        emoji: emoji || "😊", // デフォルトで絵文字を設定
+      };
 
-    const updatedMarkers = [...markers, newMarker]; // 既存のマーカーに新しいマーカーを追加
-    setMarkers(updatedMarkers); // マーカー状態を更新
-    saveMarkersToLocalStorage(updatedMarkers); // ローカルストレージに新しいマーカーを保存
+      const updatedMarkers = [...markers, newMarker]; // 既存のマーカーに新しいマーカーを追加
+      setMarkers(updatedMarkers); // マーカー状態を更新
+      saveMarkersToLocalStorage(updatedMarkers); // ローカルストレージに新しいマーカーを保存
+    }
   };
 
-  // Google Mapsの読み込みが完了していない場合はローディングメッセージを表示
-  if (!isLoaded) return <div>Loading...</div>;
+  if (!isLoaded) return <UnLoadedPage />;
   // 位置情報の取得に失敗した場合はエラーメッセージを表示
   if (locationError) window.alert("Failed to load location");
+  // Google Mapsの読み込みに失敗した場合はエラーメッセージを表示
   if (loadError) window.alert("Failed to load Google Maps");
 
   return (
