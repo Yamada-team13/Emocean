@@ -31,27 +31,6 @@ export default function Map() {
     }
   }, []);
 
-  // マーカー情報をローカルストレージに保存する関数
-  const saveMarkersToLocalStorage = (updatedMarkers: Marker[]) => {
-    localStorage.setItem("markers", JSON.stringify(updatedMarkers)); // マーカー情報をJSON形式で保存
-  };
-
-  // 地図をクリックした際に新しいマーカーを追加する関数
-  const handleMapClick = (event: google.maps.MapMouseEvent) => {
-    if (event.latLng && isLoaded) {
-      const emoji = prompt("絵文字を選んでください: 😊, 😢, 😡, 😍, 😎", "😊"); // ユーザーに絵文字を入力させる
-      const newMarker = {
-        lat: event.latLng.lat(), // クリックした場所の緯度
-        lng: event.latLng.lng(), // クリックした場所の経度
-        emoji: emoji || "😊", // デフォルトで絵文字を設定
-      };
-
-      const updatedMarkers = [...markers, newMarker]; // 既存のマーカーに新しいマーカーを追加
-      setMarkers(updatedMarkers); // マーカー状態を更新
-      saveMarkersToLocalStorage(updatedMarkers); // ローカルストレージに新しいマーカーを保存
-    }
-  };
-
   if (!isLoaded) return <UnLoadedPage />;
   // 位置情報の取得に失敗した場合はエラーメッセージを表示
   if (locationError) window.alert("Failed to load location");
@@ -79,7 +58,7 @@ export default function Map() {
         <GoogleMapComponent
           center={location || { lat: 35.6762, lng: 139.6503 }} // 現在地を地図の中心に設定。取得できなければ東京をデフォルト
           markers={markers} // マーカー情報を渡す
-          onMapClick={handleMapClick} // 地図クリック時に新しいマーカーを追加
+          onMapClick={() => {}} // 地図クリック時に新しいマーカーを追加
           onMarkerClick={() => {}}
         />
       </div>
