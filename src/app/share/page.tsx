@@ -9,10 +9,12 @@ import useCurrentLocation from "@/hooks/useCurrentLocation"; // 現在地取得�
 export default function Map() {
   // Google Maps APIを読み込む
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY, // 環境変数からAPIキーを取得
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "", // APIキーの読み込み
   });
 
-  const [markers, setMarkers] = useState([]); // マーカー情報を保存する状態
+  const [markers, setMarkers] = useState<
+    { lat: number; lng: number; emoji: string }[]
+  >([]); // マーカー情報を保存する状態
   const { location, error } = useCurrentLocation(); // 現在地を取得するカスタムフックを使用
 
   // 初回レンダリング時にローカルストレージからマーカー情報を読み込む
@@ -24,16 +26,20 @@ export default function Map() {
   }, []);
 
   // マーカー情報をローカルストレージに保存する関数
-  const saveMarkersToLocalStorage = (newMarkers) => {
+  const saveMarkersToLocalStorage = (
+    newMarkers: { lat: number; lng: number; emoji: string }[]
+  ) => {
     localStorage.setItem("markers", JSON.stringify(newMarkers)); // マーカー情報をJSON形式で保存
   };
 
   // 地図をクリックした際に新しいマーカーを追加する関数
-  const handleMapClick = (event) => {
+  const handleMapClick = (event: google.maps.MapMouseEvent) => {
+    const latLng = event.latLng;
+    if (!latLng) return;
     const emoji = prompt("絵文字を選んでください: 😊, 😢, 😡, 😍, 😎", "😊"); // ユーザーに絵文字を入力させる
     const newMarker = {
-      lat: event.latLng.lat(), // クリックした場所の緯度
-      lng: event.latLng.lng(), // クリックした場所の経度
+      lat: latLng.lat(), // クリックした場所の緯度
+      lng: latLng.lng(), // クリックした場所の経度
       emoji: emoji || "😊", // デフォルトで絵文字を設定
     };
 
@@ -43,7 +49,7 @@ export default function Map() {
   };
 
   //マーカーをクリックした際に削除する関数
-  const handleMarkerClick = (index) => {
+  const handleMarkerClick = (index: number) => {
     const confirmDelete = window.confirm("このマーカーを削除しますか？"); //確認メッセージ
     if (confirmDelete) {
       const updatedMarkers = markers.filter((_, i) => i !== index); // クリックされたマーカーを除外して新しい配列を作成
