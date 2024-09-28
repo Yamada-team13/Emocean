@@ -2,6 +2,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { font } from "@/font/font";
+import Image from "next/image";
+import emoceanPicture from "@/public/emocean.jpeg";
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
@@ -13,14 +15,14 @@ export default function Home() {
 
   return (
     <>
-      <div className={`w-full h-screen ${isVisible ? "fade-in" : ""}`}>
+      <div className={`w-full ${isVisible ? "fade-in-page" : ""}`}>
         <div className="flex items-center justify-center h-full">
           <div className="relative w-full h-full">
             <div
               className="absolute inset-0 bg-gradient-to-r min-w-[800px]"
               style={{
                 backgroundImage:
-                  "linear-gradient(135deg, #ee9ecc 57%, #adf8c6 43%)",
+                  "linear-gradient(135deg, #ee9ecc 50%, #adf8c6 50%)",
               }}
             />
             <div className="min-w-[800px]">
@@ -32,7 +34,11 @@ export default function Home() {
                   今の気持ちをみんなとシェアしよう！
                 </p>
               </header>
-              <section className="relative z-10 p-20 text-center">
+              <section
+                className={`${
+                  isVisible ? "fade-in-button" : ""
+                } relative z-10 p-20 text-center`}
+              >
                 <div className="text-white flex justify-between w-[90%] mx-auto max-w-[800px] text-[25px]">
                   <Link
                     href="/map"
@@ -46,6 +52,46 @@ export default function Home() {
                   >
                     <div>感情をシェア</div>
                   </Link>
+                </div>
+                <div
+                  className={`${
+                    isVisible ? "fade-in-picture" : ""
+                  } flex justify-center w-full mx-auto mt-20`}
+                >
+                  <Image
+                    src={emoceanPicture}
+                    alt="Application Image"
+                    width={600}
+                    height={600}
+                  />
+                </div>
+                <div
+                  className={`${
+                    isVisible ? "fade-in-picture" : ""
+                  } bg-gradient-to-b from-[#ee9ecc] to-[#ee9ecc] p-8 shadow-lg rounded-2xl mt-20 flex flex-col items-center w-[90%] mx-auto max-w-[800px] bg-[#f2f6a8] px-10`}
+                >
+                  <div>
+                    <h1
+                      className={`${font.className} text-4xl font-bold text-slate-100 text-center mb-6`}
+                    >
+                      Emoceanで今の気持ちをシェアしよう！
+                    </h1>
+                  </div>
+                  <div className="text-lg text-slate-100 leading-relaxed space-y-4">
+                    <p className="text-2xl font-semibold">操作はとても簡単！</p>
+                    <p>
+                      自分のいる場所をクリックして{" "}
+                      <span className="font-bold">絵文字を入力するだけ</span>！
+                    </p>
+                    <p>他の人が投稿した絵文字を見ることもできるよ！</p>
+                    <p>
+                      投稿を消したい場合は、投稿をクリックして{" "}
+                      <span className="font-bold">削除ボタン</span> を押してね！
+                    </p>
+                    <p className="text-2xl font-semibold">
+                      みんなでEmoceanを使って、気持ちをシェアしよう！
+                    </p>
+                  </div>
                 </div>
               </section>
             </div>
