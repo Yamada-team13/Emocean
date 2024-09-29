@@ -39,14 +39,20 @@ export default function Map() {
   const handleMapClick = (event: google.maps.MapMouseEvent) => {
     if (event.latLng && isLoaded) {
       const emoji = prompt("絵文字を選んでください: 😊, 😢, 😡, 😍, 😎", "😊"); // ユーザーに絵文字を入力させる
+      console.log(event);
       const newMarker = {
         lat: event.latLng.lat(), // クリックした場所の緯度
         lng: event.latLng.lng(), // クリックした場所の経度
         emoji: emoji || "😊", // デフォルトで絵文字を設定
       };
-      const updatedMarkers = [...markers, newMarker]; // 既存のマーカーに新しいマーカーを追加
-      setMarkers(updatedMarkers); // マーカー状態を更新
-      saveMarkersToLocalStorage(updatedMarkers); // ローカルストレージに新しいマーカーを保存
+      if (emoji !== null) {
+        const updatedMarkers = [...markers, newMarker]; // 既存のマーカーに新しいマーカーを追加
+        setMarkers(updatedMarkers); // マーカー状態を更新
+        saveMarkersToLocalStorage(updatedMarkers); // ローカルストレージに新しいマーカーを保存
+      } else {
+        window.alert("投稿がキャンセルされました");
+        return;
+      }
     } else {
       window.alert("位置情報が正しく取得できませんでした");
     }
