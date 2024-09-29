@@ -4,7 +4,6 @@ import { useLoadScript } from "@react-google-maps/api";
 import GoogleMapComponent from "@/components/MapComponent"; // Google Mapsコンポーネント
 import { font } from "@/font/font";
 import Link from "next/link";
-import useCurrentLocation from "@/hooks/useCurrentLocation"; // 現在地取得フックをインポート
 import UnLoadedPage from "@/components/UnLoadedPage";
 import { supabase } from "@/utils/supabase/supabaseClient";
 
@@ -43,8 +42,6 @@ export default function Map() {
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!, // 環境変数からAPIキーを取得
   });
 
-  const { location, locationError } = useCurrentLocation(); // 現在地を取得するカスタムフックを使用
-
   // 地図をクリックした際に新しいマーカーを追加する関数
   const handleMapClick = async (event: google.maps.MapMouseEvent) => {
     if (event.latLng && isLoaded) {
@@ -71,8 +68,6 @@ export default function Map() {
   };
 
   if (!isLoaded) return <UnLoadedPage />; // Google Maps APIが読み込まれるまでローディング表示
-  // 位置情報の取得に失敗した場合はエラーメッセージを表示
-  if (locationError) window.alert("Failed to load location");
   // Google Mapsの読み込みに失敗した場合はエラーメッセージを表示
   if (loadError) window.alert("Failed to load Google Maps");
 
