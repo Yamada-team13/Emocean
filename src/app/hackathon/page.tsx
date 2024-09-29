@@ -52,6 +52,9 @@ export default function Map() {
         lng: event.latLng.lng(), // クリックした場所の経度
         emoji: emoji || "😊", // デフォルトで絵文字を設定
       };
+      if (emoji === null) {
+        return;
+      }
       try {
         const { error } = await supabase.from("marker").insert(newMarker); // 非同期でデータ挿入
         if (error) {
