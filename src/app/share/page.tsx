@@ -76,9 +76,12 @@ export default function Map() {
           <Link href="/" className="text-5xl pt-5 pl-7">
             Emocean
           </Link>
-          <span className="flex justify-between mt-8 mr-12">
+          <span className="flex justify-between mt-8 mr-8">
             <Link href="/map" className="text-3xl">
               map
+            </Link>
+            <Link href="/hackathon" className="ml-7 text-3xl">
+              hackathon
             </Link>
           </span>
         </span>
