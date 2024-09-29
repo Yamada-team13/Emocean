@@ -53,6 +53,7 @@ export default function Map() {
         emoji: emoji || "😊", // デフォルトで絵文字を設定
       };
       if (emoji === null) {
+        window.alert("投稿がキャンセルされました");
         return;
       }
       try {
